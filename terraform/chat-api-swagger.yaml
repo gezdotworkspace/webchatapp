@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: we-chat-api
+  version: 1.0.0
+  description: Simple chat API
+
+paths:
+  /chat:
+    post:
+      summary: Create a new chat
+      operationId: createChat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientId:
+                  type: string
+                  description: Unique identifier for the client
+                name:
+                  type: string
+                  description: Display name of the client
+              required:
+                - clientId
+                - name
+      responses:
+        "201":
+          description: Chat created
+          headers:
+            X-Chat-Id:
+              description: Unique identifier for the created chat
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: created
+
+        "400":
+          description: Bad request – invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "409":
+          description: Conflict – chat already exists for this client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: ${CREATE_CHAT_LAMBDA_INVOKE_ARN}
+        payloadFormatVersion: "2.0"
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Short error code
+          example: INVALID_REQUEST
+        message:
+          type: string
+          description: Human-readable error message
+          example: clientId is required
+
+x-amazon-apigateway-importexport-version: "1.0"
+x-amazon-apigateway-minimum-compression-size: 0

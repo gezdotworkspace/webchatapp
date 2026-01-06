@@ -1,0 +1,1 @@
+export TF_VAR_artifact_bucket_name=gez-portfolio-work-code-artifacts

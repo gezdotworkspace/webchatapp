@@ -1,0 +1,16 @@
+{
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "target": "es2017",
+    "sourceMap": true
+  }
+}
