@@ -9,6 +9,7 @@ resource "aws_lambda_function" "create_chat_lambda" {
 
   environment {
     variables = {
+      CHAT_TABLE_NAME = aws_dynamodb_table.chat_table.name
       ENVIRONMENT = "dev"
       LOG_LEVEL   = "info"
     }
@@ -18,24 +19,6 @@ resource "aws_lambda_function" "create_chat_lambda" {
     Environment = "dev"
     App         = "web-chat-app"
   }
-}
-
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "create_chat_role" {
-  name               = "create_chat_role_execution_role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_lambda_permission" "allow_api_gateway_invoke" {

@@ -5,7 +5,7 @@ info:
   description: Simple chat API
 
 paths:
-  /chat:
+  /v1/chat:
     post:
       summary: Create a new chat
       operationId: createChat
