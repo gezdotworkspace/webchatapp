@@ -4,7 +4,6 @@ resource "aws_lambda_function" "create_chat_lambda" {
   function_name = "create_chat_lambda"
   role          = aws_iam_role.create_chat_role.arn
   handler       = "lambda.handler"
-
   runtime = "nodejs20.x"
 
   environment {
